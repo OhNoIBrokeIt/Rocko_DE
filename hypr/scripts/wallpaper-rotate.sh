@@ -141,7 +141,7 @@ apply_pywal() {
   local wall="$1"
   [[ -z "$wall" || ! -f "$wall" ]] && return 1
 
-  wal -i "$wall" -n --saturate 0.9 -q
+  nice -n 10 wal -i "$wall" -n --saturate 0.9 -q
   source "$HOME/.cache/wal/colors.sh" 2>/dev/null || return 1
 
   # Pick accent color — weighted by dominance + saturation
@@ -334,13 +334,16 @@ ROFI
   fi
 
   # Regenerate rofi wall thumbnail + blur (square crop — no tiling in sidebar)
-  # Done here so rofi launches instantly with no generation delay
+  # Run at low priority in background — no impact on gaming or foreground tasks
   local rofi_cache="$HOME/.cache/rofi"
   mkdir -p "$rofi_cache"
   if command -v magick &>/dev/null && [[ -f "$wall" ]]; then
-    magick "$wall" -strip -resize 1000x1000^ -gravity center -extent 1000x1000 -quality 90 "$rofi_cache/wall.thumb" 2>/dev/null
-    magick "$wall" -strip -scale 10% -blur 0x3 -resize 100% "$rofi_cache/wall.blur" 2>/dev/null
-    md5sum "$wall" | cut -d' ' -f1 > "$rofi_cache/wall.hash"
+    (
+      nice -n 19 magick "$wall" -strip -resize 1000x1000^ -gravity center -extent 1000x1000 -quality 90 "$rofi_cache/wall.thumb" 2>/dev/null
+      nice -n 19 magick "$wall" -strip -scale 10% -blur 0x3 -resize 100% "$rofi_cache/wall.blur" 2>/dev/null
+      md5sum "$wall" | cut -d' ' -f1 > "$rofi_cache/wall.hash"
+    ) &
+    disown
   fi
 
   # ── Reload live processes ─────────────────────────────────
