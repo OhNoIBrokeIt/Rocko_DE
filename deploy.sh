@@ -312,7 +312,8 @@ if command -v greetd &>/dev/null; then
     if [[ -f "$SCRIPT_DIR/greetd/config.toml" ]]; then
         sudo mkdir -p /etc/greetd
         sudo cp "$SCRIPT_DIR/greetd/config.toml" /etc/greetd/config.toml
-        success "Greetd config deployed"
+        sudo cp "$SCRIPT_DIR/greetd/hyprland-greeter-config.conf" /etc/greetd/hyprland-greeter-config.conf
+        success "Greetd configs deployed"
     fi
 
     warn "sysc-greet-hyprland is the greeter — configure it at:"
