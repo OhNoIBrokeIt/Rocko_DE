@@ -344,10 +344,10 @@ ROFI
   fi
 
   # ── Reload live processes ─────────────────────────────────
+  # Waybar reloads itself via inotify (reload_style_on_change: true in config)
+  # No external signal needed — writing colors-waybar.css triggers it automatically
+  # hyprctl reload intentionally omitted — not needed for color changes
   if [[ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]]; then
-    systemctl --user reload waybar.service 2>/dev/null
-    systemctl --user reload waybar-secondary.service 2>/dev/null
-    hyprctl reload 2>/dev/null
     pkill -SIGUSR1 kitty 2>/dev/null
     sleep 1 && swaync-client -R && swaync-client -rs 2>/dev/null &
   fi
