@@ -1,22 +1,21 @@
 {
   "layer": "top",
-  "output": ["DP-2"],
+  "output": [
+    "DP-2"
+  ],
   "position": "top",
   "height": 18,
   "exclusive": true,
   "passthrough": false,
   "reload_style_on_change": true,
-
   "modules-left": [
     "group/pill#left1",
     "group/pill#left2"
   ],
-
   "modules-center": [
     "group/pill#center1",
     "group/pill#center2"
   ],
-
   "modules-right": [
     "group/pill#weather",
     "group/pill#gpu",
@@ -25,32 +24,36 @@
     "group/pill#audio",
     "group/pill#status"
   ],
-
   "group/pill#left1": {
     "orientation": "inherit",
-    "modules": ["hyprland/workspaces"]
+    "modules": [
+      "hyprland/workspaces"
+    ]
   },
-
   "group/pill#left2": {
     "orientation": "inherit",
-    "modules": ["hyprland/window"]
+    "modules": [
+      "hyprland/window"
+    ]
   },
-
   "group/pill#center1": {
     "orientation": "inherit",
-    "modules": ["mpris"]
+    "modules": [
+      "mpris"
+    ]
   },
-
   "group/pill#center2": {
     "orientation": "inherit",
-    "modules": ["clock"]
+    "modules": [
+      "clock"
+    ]
   },
-
   "group/pill#weather": {
     "orientation": "inherit",
-    "modules": ["custom/weather"]
+    "modules": [
+      "custom/weather"
+    ]
   },
-
   "group/pill#gpu": {
     "orientation": "inherit",
     "drawer": {
@@ -59,9 +62,11 @@
       "transition-left-to-right": false,
       "click-to-reveal": false
     },
-    "modules": ["custom/gpu-icon", "custom/gpuinfo"]
+    "modules": [
+      "custom/gpu-icon",
+      "custom/gpuinfo"
+    ]
   },
-
   "group/pill#cpu": {
     "orientation": "inherit",
     "drawer": {
@@ -70,14 +75,17 @@
       "transition-left-to-right": false,
       "click-to-reveal": false
     },
-    "modules": ["custom/cpu-icon", "custom/cpuinfo"]
+    "modules": [
+      "custom/cpu-icon",
+      "custom/cpuinfo"
+    ]
   },
-
   "group/pill#net": {
     "orientation": "inherit",
-    "modules": ["network"]
+    "modules": [
+      "network"
+    ]
   },
-
   "group/pill#audio": {
     "orientation": "inherit",
     "drawer": {
@@ -86,9 +94,11 @@
       "transition-left-to-right": false,
       "click-to-reveal": false
     },
-    "modules": ["pulseaudio", "pulseaudio#microphone"]
+    "modules": [
+      "pulseaudio",
+      "pulseaudio#microphone"
+    ]
   },
-
   "group/pill#status": {
     "orientation": "inherit",
     "drawer": {
@@ -97,9 +107,13 @@
       "transition-left-to-right": false,
       "click-to-reveal": false
     },
-    "modules": ["custom/swaync", "bluetooth", "tray", "custom/power"]
+    "modules": [
+      "custom/swaync",
+      "bluetooth",
+      "tray",
+      "custom/power"
+    ]
   },
-
   "hyprland/workspaces": {
     "all-outputs": false,
     "active-only": false,
@@ -108,11 +122,21 @@
     "on-scroll-up": "hyprctl dispatch workspace -1",
     "on-scroll-down": "hyprctl dispatch workspace +1",
     "persistent-workspaces": {
-      "DP-2": [1, 2, 3, 4, 5, 6],
-      "DP-3": [7, 8, 9]
+      "DP-2": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "DP-3": [
+        7,
+        8,
+        9
+      ]
     }
   },
-
   "hyprland/window": {
     "format": " \uf303 {0}",
     "separate-outputs": true,
@@ -128,14 +152,16 @@
     },
     "max-length": 50
   },
-
   "mpris": {
     "justify": "center",
-    "dynamic-importance-order": ["title", "artist", "album"],
+    "dynamic-importance-order": [
+      "title",
+      "artist",
+      "album"
+    ],
     "format": "{player_icon} {dynamic}",
     "format-paused": "{status_icon} <i>{dynamic}</i>",
     "format-stopped": "{status_icon}",
-    "interval": 60,
     "dynamic-separator": "  ",
     "player-icons": {
       "default": "\u25b6",
@@ -156,7 +182,6 @@
     "tooltip": true,
     "tooltip-format": "{title}\nby: {artist}\n{position} / {length}\nPlayer: {player}"
   },
-
   "clock": {
     "format": "{:%I:%M %p}",
     "format-alt": "{:%R \udb80\udced %d\u00b7%m\u00b7%y}",
@@ -178,7 +203,6 @@
       "on-scroll-down": "shift_down"
     }
   },
-
   "custom/weather": {
     "exec": "~/.config/waybar/scripts/weather.sh",
     "return-type": "json",
@@ -186,14 +210,12 @@
     "format": "{}",
     "tooltip": true
   },
-
   "custom/gpu-icon": {
-    "format": "󰾲 ",
+    "format": "\udb83\udfb2 ",
     "tooltip": true,
     "tooltip-format": "Click to expand GPU info",
     "on-click": ""
   },
-
   "custom/gpuinfo": {
     "exec": "~/.config/waybar/scripts/gpuinfo.sh",
     "return-type": "json",
@@ -203,14 +225,12 @@
     "max-length": 1000,
     "on-click": "nvidia-settings"
   },
-
   "custom/cpu-icon": {
-    "format": "󰍛 ",
+    "format": "\udb80\udf5b ",
     "tooltip": true,
     "tooltip-format": "Click to expand CPU info",
     "on-click": ""
   },
-
   "custom/cpuinfo": {
     "exec": "~/.config/waybar/scripts/cpuinfo.sh",
     "return-type": "json",
@@ -219,7 +239,6 @@
     "tooltip": true,
     "max-length": 1000
   },
-
   "network": {
     "tooltip": true,
     "format-wifi": "\uf1eb ",
@@ -232,7 +251,6 @@
     "on-click": "~/.config/hypr/scripts/wifi-menu.sh",
     "on-click-right": "nm-connection-editor"
   },
-
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "\udb81\udf5f",
@@ -245,10 +263,13 @@
     "format-icons": {
       "headphone": "",
       "headset": "",
-      "default": ["", "", ""]
+      "default": [
+        "",
+        "",
+        ""
+      ]
     }
   },
-
   "pulseaudio#microphone": {
     "format": "{format_source}",
     "format-source": "\uf86b",
@@ -260,19 +281,29 @@
     "tooltip-format": "{format_source} {source_desc}\n{source_volume}%",
     "scroll-step": 5
   },
-
   "bluetooth": {
     "format": "",
     "format-disabled": "",
     "format-connected": " {num_connections}",
     "format-connected-battery": "{icon} {num_connections}",
-    "format-icons": ["\udb81\udd07", "\udb81\udcfe", "\udb81\udcff", "\udb81\udd00", "\udb81\udd01", "\udb81\udd02", "\udb81\udd03", "\udb81\udd04", "\udb81\udd05", "\udb81\udd06", "\udb81\udd08"],
+    "format-icons": [
+      "\udb81\udd07",
+      "\udb81\udcfe",
+      "\udb81\udcff",
+      "\udb81\udd00",
+      "\udb81\udd01",
+      "\udb81\udd02",
+      "\udb81\udd03",
+      "\udb81\udd04",
+      "\udb81\udd05",
+      "\udb81\udd06",
+      "\udb81\udd08"
+    ],
     "tooltip-format": "{controller_alias}\n{num_connections} connected",
     "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
     "on-click": "blueman-manager"
   },
-
   "custom/swaync": {
     "exec-if": "pgrep -x swaync",
     "format": "{icon}",
@@ -290,10 +321,8 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
-
-
   "custom/power": {
-    "format": "",
+    "format": "\uf011",
     "tooltip": true,
     "tooltip-format": "Power menu",
     "on-click": "wlogout -b 6 -c 0 -r 0 -m 0 --protocol layer-shell",

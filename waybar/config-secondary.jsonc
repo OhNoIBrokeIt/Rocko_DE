@@ -158,7 +158,6 @@
     "format": "{player_icon} {dynamic}",
     "format-paused": "{status_icon} <i>{dynamic}</i>",
     "format-stopped": "{status_icon}",
-    "interval": 60,
     "dynamic-separator": "  ",
     "player-icons": {
       "default": "\u25b6",
