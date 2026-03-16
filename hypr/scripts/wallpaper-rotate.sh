@@ -27,8 +27,8 @@ INTERVAL=300   # seconds between rotations (5 min)
 
 TRANSITION_FLAGS=(
   --transition-type     fade
-  --transition-duration 1.5
-  --transition-fps      60
+  --transition-duration 2
+  --transition-fps      144
 )
 
 # ---- Output paths ----------------------------------------
@@ -439,6 +439,19 @@ case "$1" in
     check_dirs
     ;;
   "")
+    # ── Single instance lock ─────────────────────────────
+    PIDFILE="$HOME/.cache/wallpaper-rotate/daemon.pid"
+    mkdir -p "$(dirname "$PIDFILE")"
+    if [[ -f "$PIDFILE" ]]; then
+      OLD_PID=$(cat "$PIDFILE")
+      if kill -0 "$OLD_PID" 2>/dev/null; then
+        echo "[wallpaper] Daemon already running (PID $OLD_PID), exiting"
+        exit 0
+      fi
+    fi
+    echo $$ > "$PIDFILE"
+    trap "rm -f '$PIDFILE'" EXIT
+
     echo "Starting wallpaper rotation daemon (interval: ${INTERVAL}s)"
     check_dirs
     swww query &>/dev/null || sleep 3
