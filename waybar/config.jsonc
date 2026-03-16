@@ -359,7 +359,8 @@
     "interval": 120,
     "format": "{}",
     "tooltip": true,
-    "on-click": "kitty -e paru"
+    "on-click": "kitty -e paru",
+    "signal": 8
   },
   "privacy": {
     "icon-spacing": 4,
