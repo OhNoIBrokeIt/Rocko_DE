@@ -1,5 +1,25 @@
 # Rocko_DE — Hyprland Desktop Environment Config
 
+## Quick Start — Fresh CachyOS Install
+
+```bash
+git clone https://github.com/ohnoibrokeit/Rocko_DE.git && cd Rocko_DE && bash deploy.sh
+```
+
+The deploy script will:
+1. Install all required packages via pacman + paru
+2. Deploy all configs to the correct locations
+3. Enable systemd services
+4. Set fonts system-wide
+5. Set fish as default shell
+6. Create wallpaper directories
+
+After deploy:
+1. Add wallpapers to `~/Pictures/Wallpapers/ultrawide/` and `~/Pictures/Wallpapers/4k/`
+2. Reboot
+3. On first login run: `~/.config/hypr/scripts/wallpaper-rotate.sh next`
+
+
 A fully themed Hyprland setup inspired by HyDE, built for dual monitor:
 - **DP-2**: 5120x1440 OLED ultrawide (no scaling)
 - **DP-3**: 4K @ 1.25 scaling
