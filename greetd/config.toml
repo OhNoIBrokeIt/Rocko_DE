@@ -1,0 +1,10 @@
+# /etc/greetd/config.toml
+# Greeter: sysc-greet-hyprland
+# https://github.com/Nomadcxx/sysc-greet
+
+[terminal]
+vt = 1
+
+[default_session]
+command = "sysc-greet"
+user = "greeter"

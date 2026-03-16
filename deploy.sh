@@ -97,7 +97,7 @@ PACKAGES=(
 )
 
 AUR_PACKAGES=(
-    sysc-greet
+    sysc-greet-hyprland
     catppuccin-gtk-theme-mocha
     python-pywal
 )
@@ -296,14 +296,30 @@ else
     warn "Fish not installed"
 fi
 
-# ── 15. Greetd ────────────────────────────────────────────
+# ── 15. Greetd + sysc-greet-hyprland ─────────────────────
 info "Configuring greetd..."
 if command -v greetd &>/dev/null; then
+    # Disable any other display managers that may be installed
+    sudo systemctl disable sddm 2>/dev/null || true
+    sudo systemctl disable lightdm 2>/dev/null || true
+    sudo systemctl disable gdm 2>/dev/null || true
+    sudo systemctl mask sddm 2>/dev/null || true
+
     sudo systemctl enable greetd
     success "Greetd enabled"
-    warn "Configure sysc-greet manually: https://github.com/Nomadcxx/sysc-greet"
+
+    # Deploy greetd config if present
+    if [[ -f "$SCRIPT_DIR/greetd/config.toml" ]]; then
+        sudo mkdir -p /etc/greetd
+        sudo cp "$SCRIPT_DIR/greetd/config.toml" /etc/greetd/config.toml
+        success "Greetd config deployed"
+    fi
+
+    warn "sysc-greet-hyprland is the greeter — configure it at:"
+    warn "https://github.com/Nomadcxx/sysc-greet"
+    warn "Remove any old greetd configs: sudo rm -f /etc/greetd/greeter-launch.sh"
 else
-    warn "Greetd not installed"
+    warn "Greetd not installed — install with: paru -S greetd sysc-greet-hyprland"
 fi
 
 # ── 15. Final setup ───────────────────────────────────────
@@ -324,7 +340,7 @@ echo "  Next steps:"
 echo "  1. Add wallpapers to ~/Pictures/Wallpapers/ultrawide/ and ~/Pictures/Wallpapers/4k/"
 echo "  2. Log out and log back in (or reboot)"
 echo "  3. On first login run: ~/.config/hypr/scripts/wallpaper-rotate.sh next"
-echo "  4. Configure sysc-greet: https://github.com/Nomadcxx/sysc-greet"
+echo "  4. Configure sysc-greet-hyprland: https://github.com/Nomadcxx/sysc-greet"
 echo "  5. Run nwg-look to confirm GTK theme"
 echo ""
 echo "  Key bindings:"
