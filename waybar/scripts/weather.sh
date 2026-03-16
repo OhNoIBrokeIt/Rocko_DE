@@ -7,8 +7,8 @@ LOCATION="Hollywood,FL"   # Change to your city, zip, or "City,State"
 CACHE_FILE="$HOME/.cache/waybar-weather"
 CACHE_MAX_AGE=1800  # 30 minutes
 
-# ── Return cached result if fresh ────────────────────────
-if [[ -f "$CACHE_FILE" ]] && [[ -n "$(find "$CACHE_FILE" -mmin -30 2>/dev/null)" ]]; then
+# ── Return cached result if fresh (skip if --refresh) ────
+if [[ "$1" != "--refresh" ]] && [[ -f "$CACHE_FILE" ]] && [[ -n "$(find "$CACHE_FILE" -mmin -30 2>/dev/null)" ]]; then
     cat "$CACHE_FILE"
     [[ -z "$(find "$CACHE_FILE" -mmin -20 2>/dev/null)" ]] && ("$0" --refresh &>/dev/null &) &
     exit 0
@@ -36,37 +36,30 @@ if [[ -z "$DATA" ]]; then
     exit 0
 fi
 
-read -r TEMP_C FEELS DESC HUMID WIND CODE < <(echo "$DATA" | python3 -c "
-import sys, json
-d = json.load(sys.stdin)
-c = d['current_condition'][0]
-print(
-    c['temp_C'],
-    c['FeelsLikeC'],
-    c['weatherDesc'][0]['value'],
-    c['humidity'],
-    c['windspeedKmph'],
-    c['weatherCode']
-)
-" 2>/dev/null)
+TEMP_C=$(echo "$DATA" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['temp_C'])" 2>/dev/null)
+FEELS=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['FeelsLikeC'])" 2>/dev/null)
+DESC=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherDesc'][0]['value'])" 2>/dev/null)
+HUMID=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['humidity'])" 2>/dev/null)
+WIND=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['windspeedKmph'])" 2>/dev/null)
+CODE=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherCode'])" 2>/dev/null)
 
 get_icon() {
     local code="$1"
     case "$code" in
-        113)                    echo "󰖙" ;;  # Sunny / Clear
-        116)                    echo "󰖕" ;;  # Partly cloudy
-        119|122)                echo "󰖔" ;;  # Cloudy / Overcast
-        143|248|260)            echo "󰖑" ;;  # Mist / Fog
-        176|263|266|293|296)    echo "󰦒" ;;  # Light rain / drizzle
-        299|302|305|308)        echo "󰖗" ;;  # Moderate / heavy rain
-        311|314|317|320)        echo "󰖗" ;;  # Freezing rain / sleet
-        323|326|329|332)        echo "󰖘" ;;  # Light / moderate snow
-        335|338|350|371|374)    echo "󰖘" ;;  # Heavy snow / blizzard
-        377)                    echo "󰖘" ;;  # Ice pellets
-        386|389)                echo "󰖈" ;;  # Rain with thunder
-        392|395)                echo "󰖈" ;;  # Snow with thunder
-        200)                    echo "󰖈" ;;  # Thundery outbreaks
-        *)                      echo "󰖐" ;;  # Unknown
+        113)                    echo "" ;;  # weather-day_sunny
+        116)                    echo "" ;;  # weather-day_sunny_overcast
+        119|122)                echo "" ;;  # weather-cloudy
+        143|248|260)            echo "" ;;  # weather-fog
+        176|263|266|293|296)    echo "" ;;  # weather-sprinkle
+        299|302|305|308)        echo "" ;;  # weather-rain
+        311|314|317|320)        echo "" ;;  # weather-sleet
+        323|326|329|332)        echo "" ;;  # weather-snow
+        335|338|350|371|374)    echo "" ;;  # weather-snow
+        377)                    echo "" ;;  # weather-hail
+        386|389)                echo "" ;;  # weather-day_thunderstorm
+        392|395)                echo "" ;;  # weather-day_snow_thunderstorm
+        200)                    echo "" ;;  # weather-thunderstorm
+        *)                      echo "" ;;  # weather-na
     esac
 }
 
