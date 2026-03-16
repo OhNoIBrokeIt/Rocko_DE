@@ -37,7 +37,7 @@ A fully themed Hyprland setup inspired by HyDE, built for dual monitor:
 ## Directory Structure
 ```
 Rocko_DE/
-├── waybar/          — bar configs, styles, scripts
+├── waybar/          — bar config (single instance, all monitors), styles, scripts
 ├── rofi/            — launcher themes and launch script
 ├── hypr/            — hyprlock, hypridle, scripts
 ├── swaync/          — notification center config + style
@@ -51,9 +51,9 @@ Rocko_DE/
 | File | Destination |
 |------|-------------|
 | waybar/config.jsonc | ~/.config/waybar/config.jsonc |
-| waybar/config-secondary.jsonc | ~/.config/waybar/config-secondary.jsonc |
+
 | waybar/style.css | ~/.config/waybar/style.css |
-| waybar/style-secondary.css | ~/.config/waybar/style-secondary.css |
+
 | waybar/colors.css | ~/.config/waybar/colors.css |
 | waybar/scripts/* | ~/.config/waybar/scripts/ |
 | rofi/theme.rasi | ~/.config/rofi/theme.rasi |
@@ -70,6 +70,10 @@ Rocko_DE/
 | gtk/gtk4-settings.ini | ~/.config/gtk-4.0/settings.ini |
 | systemd/* | ~/.config/systemd/user/ |
 | pypr/config.toml | ~/.config/pypr/config.toml |
+| hypr/conf/monitors.conf | ~/.config/hypr/conf/monitors.conf |
+| hypr/conf/animations.conf | ~/.config/hypr/conf/animations.conf |
+| hypr/conf/windowrules.conf | ~/.config/hypr/conf/windowrules.conf |
+| hypr/conf/keybinds.conf | ~/.config/hypr/conf/keybinds.conf |
 
 ## Dependencies
 ```

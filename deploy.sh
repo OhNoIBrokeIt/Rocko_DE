@@ -143,12 +143,10 @@ echo "   ~/Pictures/Wallpapers/ultrawide/  — DP-2 (5120x1440)"
 echo "   ~/Pictures/Wallpapers/4k/         — DP-3 (3840x2160)"
 
 # ── 3. Waybar ─────────────────────────────────────────────
-info "Deploying waybar..."
+info "Deploying waybar (single instance — all monitors)..."
 
 cp "$SCRIPT_DIR/waybar/config.jsonc"           "$CONFIG/waybar/config.jsonc"
-cp "$SCRIPT_DIR/waybar/config-secondary.jsonc" "$CONFIG/waybar/config-secondary.jsonc"
 cp "$SCRIPT_DIR/waybar/style.css"              "$CONFIG/waybar/style.css"
-cp "$SCRIPT_DIR/waybar/style-secondary.css"    "$CONFIG/waybar/style-secondary.css"
 cp "$SCRIPT_DIR/waybar/colors.css"             "$CONFIG/waybar/colors.css"
 cp "$SCRIPT_DIR/waybar/scripts/"*              "$CONFIG/waybar/scripts/"
 chmod +x "$CONFIG/waybar/scripts/"*
@@ -159,12 +157,12 @@ success "Waybar deployed"
 info "Installing systemd services..."
 
 cp "$SCRIPT_DIR/systemd/waybar.service"           "$CONFIG/systemd/user/waybar.service"
-cp "$SCRIPT_DIR/systemd/waybar-secondary.service" "$CONFIG/systemd/user/waybar-secondary.service"
 cp "$SCRIPT_DIR/systemd/waybar-resume.service"    "$CONFIG/systemd/user/waybar-resume.service"
 
 systemctl --user daemon-reload
 systemctl --user enable waybar.service
-systemctl --user enable waybar-secondary.service
+
+# waybar-resume goes to system scope (suspend.target lives there)
 
 # waybar-resume needs system scope
 sudo cp "$SCRIPT_DIR/systemd/waybar-resume.service" /etc/systemd/system/waybar-resume.service
@@ -193,6 +191,15 @@ cp "$SCRIPT_DIR/hypr/hypridle.conf"        "$CONFIG/hypr/hypridle.conf"
 cp "$SCRIPT_DIR/hypr/scripts/wallpaper-rotate.sh"   "$CONFIG/hypr/scripts/wallpaper-rotate.sh"
 cp "$SCRIPT_DIR/hypr/scripts/toggle-waybar.sh"      "$CONFIG/hypr/scripts/toggle-waybar.sh"
 cp "$SCRIPT_DIR/hypr/scripts/keybind-cheatsheet.sh" "$CONFIG/hypr/scripts/keybind-cheatsheet.sh"
+cp "$SCRIPT_DIR/hypr/scripts/gamemode.sh"           "$CONFIG/hypr/scripts/gamemode.sh"
+chmod +x "$CONFIG/hypr/scripts/"*
+
+# Sourced config files
+mkdir -p "$CONFIG/hypr/conf"
+cp "$SCRIPT_DIR/hypr/conf/monitors.conf"    "$CONFIG/hypr/conf/monitors.conf"
+cp "$SCRIPT_DIR/hypr/conf/animations.conf"  "$CONFIG/hypr/conf/animations.conf"
+cp "$SCRIPT_DIR/hypr/conf/windowrules.conf" "$CONFIG/hypr/conf/windowrules.conf"
+cp "$SCRIPT_DIR/hypr/conf/keybinds.conf"    "$CONFIG/hypr/conf/keybinds.conf"
 chmod +x "$CONFIG/hypr/scripts/"*
 
 # Pywal color file — empty on first run

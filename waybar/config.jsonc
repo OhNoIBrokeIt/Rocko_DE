@@ -1,7 +1,7 @@
 {
   "layer": "top",
   "output": [
-    "DP-2"
+    "*"
   ],
   "position": "top",
   "height": 18,
@@ -33,7 +33,8 @@
   "group/pill#left2": {
     "orientation": "inherit",
     "modules": [
-      "hyprland/window"
+      "hyprland/window",
+      "idle_inhibitor"
     ]
   },
   "group/pill#center1": {
@@ -83,7 +84,8 @@
   "group/pill#net": {
     "orientation": "inherit",
     "modules": [
-      "network"
+      "network",
+      "custom/disk"
     ]
   },
   "group/pill#audio": {
@@ -108,6 +110,8 @@
       "click-to-reveal": false
     },
     "modules": [
+      "custom/updates",
+      "privacy",
       "custom/swaync",
       "bluetooth",
       "tray",
@@ -332,5 +336,55 @@
     "spacing": 6,
     "icon-size": 16,
     "show-passive-items": true
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "\udb81\udc52",
+      "deactivated": "\udb81\udc51"
+    },
+    "tooltip-format-activated": "Idle inhibitor ON \u2014 screen will not sleep",
+    "tooltip-format-deactivated": "Idle inhibitor OFF"
+  },
+  "custom/disk": {
+    "exec": "~/.config/waybar/scripts/disk.sh",
+    "return-type": "json",
+    "interval": 60,
+    "format": "{}",
+    "tooltip": true
+  },
+  "custom/updates": {
+    "exec": "~/.config/waybar/scripts/updates.sh",
+    "return-type": "json",
+    "interval": 120,
+    "format": "{}",
+    "tooltip": true,
+    "on-click": "kitty -e paru"
+  },
+  "privacy": {
+    "icon-spacing": 4,
+    "icon-size": 16,
+    "transition-duration": 250,
+    "ignore-monitor": true,
+    "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true
+      },
+      {
+        "type": "audio-in",
+        "tooltip": true
+      }
+    ],
+    "ignore": [
+      {
+        "type": "audio-in",
+        "name": "cava"
+      },
+      {
+        "type": "screenshare",
+        "name": "obs"
+      }
+    ]
   }
 }
