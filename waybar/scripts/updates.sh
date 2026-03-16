@@ -10,8 +10,8 @@
 CACHE_FILE="$HOME/.cache/waybar-updates"
 CACHE_MAX_AGE=3600  # 1 hour in seconds
 
-# ── Return cached result if fresh (uses find — no subprocesses) ──
-if [[ -f "$CACHE_FILE" ]] && [[ -n "$(find "$CACHE_FILE" -mmin -60 2>/dev/null)" ]]; then
+# ── Return cached result if fresh (skip if --refresh) ────────
+if [[ "$1" != "--refresh" ]] && [[ -f "$CACHE_FILE" ]] && [[ -n "$(find "$CACHE_FILE" -mmin -60 2>/dev/null)" ]]; then
     cat "$CACHE_FILE"
     # Refresh in background if getting stale (>45 min)
     [[ -z "$(find "$CACHE_FILE" -mmin -45 2>/dev/null)" ]] && ("$0" --refresh &>/dev/null &) &
