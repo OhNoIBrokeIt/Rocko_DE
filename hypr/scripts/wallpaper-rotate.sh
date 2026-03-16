@@ -27,8 +27,8 @@ INTERVAL=300   # seconds between rotations (5 min)
 
 TRANSITION_FLAGS=(
   --transition-type     fade
-  --transition-duration 2
-  --transition-fps      144
+  --transition-duration 1.5
+  --transition-fps      60
 )
 
 # ---- Output paths ----------------------------------------

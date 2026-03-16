@@ -4,18 +4,18 @@
 #  ~/.config/hypr/scripts/gamemode.sh
 #
 #  Toggles Hyprland performance mode for gaming:
-#    ON  — disables animations, blur, shadows, gaps, rounding
-#    OFF — restores full config via hyprctl reload config-only
+#    ON  — disables compositor effects, pauses wallpaper daemon
+#    OFF — restores full config, resumes wallpaper daemon
 #
-#  Bind: Super+F12 to toggle
+#  Bind: Super+Alt+G
 #  Based on HyDE gamemode.sh
 # ============================================================
 
 HYPRGAMEMODE=$(hyprctl getoption animations:enabled | sed -n '1p' | awk '{print $2}')
+WALLPAPER_SCRIPT="$HOME/.config/hypr/scripts/wallpaper-rotate.sh"
 
 if [ "$HYPRGAMEMODE" = 1 ]; then
     # ── Enter game mode ───────────────────────────────────
-    # Disable all eye candy for maximum GPU headroom
     hyprctl -q --batch "\
         keyword animations:enabled 0;\
         keyword decoration:shadow:enabled 0;\
@@ -33,17 +33,24 @@ if [ "$HYPRGAMEMODE" = 1 ]; then
         keyword layerrule noanim,swww-daemon;\
         keyword layerrule noanim,rofi"
 
-    # Make all windows fully opaque
     hyprctl 'keyword windowrule opaque,class:(.*)'
 
+    # Pause wallpaper rotation daemon
+    pkill -f "wallpaper-rotate.sh" 2>/dev/null
+    echo "[gamemode] Wallpaper daemon stopped"
+
     notify-send -a "Hyprland" -i input-gaming "Game Mode ON" \
-        "Animations, blur and shadows disabled" -t 2000
+        "Effects disabled — wallpaper rotation paused" -t 2000
 
 else
     # ── Exit game mode ────────────────────────────────────
-    # Restore full config from hyprland.conf
     hyprctl reload config-only -q
 
+    # Resume wallpaper daemon
+    "$WALLPAPER_SCRIPT" &
+    disown
+    echo "[gamemode] Wallpaper daemon restarted"
+
     notify-send -a "Hyprland" -i input-gaming "Game Mode OFF" \
-        "Full desktop effects restored" -t 2000
+        "Full effects restored — wallpaper rotation resumed" -t 2000
 fi
