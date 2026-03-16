@@ -46,6 +46,9 @@ else
     # ── Exit game mode ────────────────────────────────────
     hyprctl reload config-only -q
 
+    # Restart waybar so layer rules (blur/transparency) re-apply cleanly
+    sleep 0.5 && systemctl --user restart waybar.service &
+
     # Resume wallpaper daemon
     "$WALLPAPER_SCRIPT" &
     disown
