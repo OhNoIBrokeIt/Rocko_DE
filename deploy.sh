@@ -205,26 +205,35 @@ info "Deploying pyprland..."
 cp "$SCRIPT_DIR/pypr/config.toml" "$CONFIG/pypr/config.toml"
 success "Pyprland deployed"
 
-# ── 8. Fastfetch ──────────────────────────────────────────
+# ── 8. Neovim ─────────────────────────────────────────────
+info "Deploying neovim config..."
+mkdir -p "$CONFIG/nvim/lua/config"
+mkdir -p "$CONFIG/nvim/lua/plugins"
+cp "$SCRIPT_DIR/nvim/init.lua"              "$CONFIG/nvim/init.lua"
+cp "$SCRIPT_DIR/nvim/lua/config/"*         "$CONFIG/nvim/lua/config/"
+cp "$SCRIPT_DIR/nvim/lua/plugins/"*        "$CONFIG/nvim/lua/plugins/"
+success "Neovim deployed"
+
+# ── 15. Fastfetch ──────────────────────────────────────────
 info "Deploying fastfetch..."
 mkdir -p "$CONFIG/fastfetch"
 cp "$SCRIPT_DIR/fastfetch/config.jsonc" "$CONFIG/fastfetch/config.jsonc"
 cp "$SCRIPT_DIR/fastfetch/avatar.png"   "$CONFIG/fastfetch/avatar.png"
 success "Fastfetch deployed"
 
-# ── 9. Swaync ─────────────────────────────────────────────
+# ── 15. Swaync ─────────────────────────────────────────────
 info "Deploying swaync..."
 cp "$SCRIPT_DIR/swaync/config.json" "$CONFIG/swaync/config.json"
 cp "$SCRIPT_DIR/swaync/style.css"   "$CONFIG/swaync/style.css"
 success "Swaync deployed"
 
-# ── 10. Wlogout ────────────────────────────────────────────
+# ── 15. Wlogout ────────────────────────────────────────────
 info "Deploying wlogout..."
 cp "$SCRIPT_DIR/wlogout/layout"    "$CONFIG/wlogout/layout"
 cp "$SCRIPT_DIR/wlogout/style.css" "$CONFIG/wlogout/style.css"
 success "Wlogout deployed"
 
-# ── 11. GTK / Fonts ───────────────────────────────────────
+# ── 15. GTK / Fonts ───────────────────────────────────────
 info "Applying GTK settings and fonts..."
 
 cp "$SCRIPT_DIR/gtk/gtk3-settings.ini" "$CONFIG/gtk-3.0/settings.ini"
@@ -252,7 +261,7 @@ fi
 
 success "GTK settings applied"
 
-# ── 12. Fish shell ────────────────────────────────────────
+# ── 15. Fish shell ────────────────────────────────────────
 info "Setting fish as default shell..."
 if command -v fish &>/dev/null; then
     FISH_PATH=$(which fish)
@@ -287,7 +296,7 @@ else
     warn "Fish not installed"
 fi
 
-# ── 13. Greetd ────────────────────────────────────────────
+# ── 15. Greetd ────────────────────────────────────────────
 info "Configuring greetd..."
 if command -v greetd &>/dev/null; then
     sudo systemctl enable greetd
@@ -297,7 +306,7 @@ else
     warn "Greetd not installed"
 fi
 
-# ── 14. Final setup ───────────────────────────────────────
+# ── 15. Final setup ───────────────────────────────────────
 info "Running initial wallpaper setup..."
 if [[ -n "$(find "$HOME/Pictures/Wallpapers/ultrawide" -type f 2>/dev/null | head -1)" ]]; then
     # Can't run wallpaper-rotate until Hyprland is running
