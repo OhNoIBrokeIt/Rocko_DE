@@ -36,27 +36,41 @@ if [[ -z "$DATA" ]]; then
     exit 0
 fi
 
-TEMP_C=$(echo "$DATA" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['temp_C'])" 2>/dev/null)
-FEELS=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['FeelsLikeC'])" 2>/dev/null)
-DESC=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherDesc'][0]['value'])" 2>/dev/null)
-HUMID=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['humidity'])" 2>/dev/null)
-WIND=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['windspeedKmph'])" 2>/dev/null)
+read -r TEMP_C FEELS DESC HUMID WIND CODE < <(echo "$DATA" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+c = d['current_condition'][0]
+print(
+    c['temp_C'],
+    c['FeelsLikeC'],
+    c['weatherDesc'][0]['value'],
+    c['humidity'],
+    c['windspeedKmph'],
+    c['weatherCode']
+)
+" 2>/dev/null)
 
 get_icon() {
-    local desc="$1"
-    case "$desc" in
-        *Sunny*|*Clear*)     echo "󰖙" ;;
-        *Partly*cloud*)      echo "󰖕" ;;
-        *Cloud*|*Overcast*)  echo "󰖔" ;;
-        *Rain*|*Drizzle*)    echo "󰖗" ;;
-        *Thunder*|*Storm*)   echo "󰖈" ;;
-        *Snow*|*Blizzard*)   echo "󰖘" ;;
-        *Mist*|*Fog*)        echo "󰖑" ;;
-        *)                   echo "󰖐" ;;
+    local code="$1"
+    case "$code" in
+        113)                    echo "󰖙" ;;  # Sunny / Clear
+        116)                    echo "󰖕" ;;  # Partly cloudy
+        119|122)                echo "󰖔" ;;  # Cloudy / Overcast
+        143|248|260)            echo "󰖑" ;;  # Mist / Fog
+        176|263|266|293|296)    echo "󰦒" ;;  # Light rain / drizzle
+        299|302|305|308)        echo "󰖗" ;;  # Moderate / heavy rain
+        311|314|317|320)        echo "󰖗" ;;  # Freezing rain / sleet
+        323|326|329|332)        echo "󰖘" ;;  # Light / moderate snow
+        335|338|350|371|374)    echo "󰖘" ;;  # Heavy snow / blizzard
+        377)                    echo "󰖘" ;;  # Ice pellets
+        386|389)                echo "󰖈" ;;  # Rain with thunder
+        392|395)                echo "󰖈" ;;  # Snow with thunder
+        200)                    echo "󰖈" ;;  # Thundery outbreaks
+        *)                      echo "󰖐" ;;  # Unknown
     esac
 }
 
-ICON=$(get_icon "$DESC")
+ICON=$(get_icon "$CODE")
 TEMP_F=$(( (TEMP_C * 9 / 5) + 32 ))
 FEELS_F=$(( (FEELS * 9 / 5) + 32 ))
 
