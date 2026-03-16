@@ -1,0 +1,121 @@
+/* ============================================================
+   wlogout style — v2.0
+   ~/.config/wlogout/style.css
+
+   Colors sourced from waybar colors-waybar.css (wallbash)
+   Font: Maple Mono NF
+   OLED-safe: dark backgrounds, no pure white
+   ============================================================ */
+
+@import "/home/ohnoibrokeit/.config/waybar/colors-waybar.css";
+
+* {
+    background-image: none;
+    font-family: "Maple Mono NF", monospace;
+    font-size: 15px;
+}
+
+window {
+    background-color: alpha(@bg, 0.88);
+}
+
+button {
+    color: @main-fg;
+    background-color: alpha(@bg, 0.80);
+    outline-style: none;
+    border: 1px solid @border-color;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 20%;
+    border-radius: 0px;
+    box-shadow: none;
+    text-shadow: none;
+    transition: all 0.3s cubic-bezier(.55, 0.0, .28, 1.682);
+}
+
+button:focus {
+    background-color: @wb-act-bg;
+    color: @wb-act-fg;
+    border-color: @wb-act-fg;
+}
+
+button:hover {
+    background-color: @wb-hvr-bg;
+    background-size: 30%;
+    border-radius: 16px;
+    color: @wb-act-fg;
+    border-color: @wb-act-fg;
+    transition: all 0.3s cubic-bezier(.55, 0.0, .28, 1.682);
+}
+
+button:hover#shutdown {
+    background-color: rgba(255, 60, 111, 0.12);
+    border-color: rgba(255, 60, 111, 0.60);
+    color: rgba(255, 60, 111, 1.0);
+}
+
+button:hover#reboot {
+    background-color: rgba(255, 209, 102, 0.12);
+    border-color: rgba(255, 209, 102, 0.60);
+    color: rgba(255, 209, 102, 1.0);
+}
+
+button:hover#logout {
+    background-color: rgba(255, 140, 66, 0.12);
+    border-color: rgba(255, 140, 66, 0.60);
+    color: rgba(255, 140, 66, 1.0);
+}
+
+button:hover#suspend {
+    background-color: rgba(100, 220, 120, 0.10);
+    border-color: rgba(100, 220, 120, 0.50);
+    color: rgba(100, 220, 120, 1.0);
+}
+
+button:hover#hibernate {
+    background-color: rgba(180, 120, 255, 0.10);
+    border-color: rgba(180, 120, 255, 0.50);
+    color: rgba(180, 120, 255, 1.0);
+}
+
+button:hover#lock {
+    background-color: @wb-hvr-bg;
+    border-color: @wb-act-fg;
+    color: @wb-act-fg;
+}
+
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"));
+    border-radius: 16px 0px 0px 16px;
+    margin: 12px 0px 12px 12px;
+}
+
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"));
+    border-radius: 0px;
+    margin: 12px 0px;
+}
+
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"));
+    border-radius: 0px;
+    margin: 12px 0px;
+}
+
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"));
+    border-radius: 0px;
+    margin: 12px 0px;
+}
+
+#hibernate {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"));
+    border-radius: 0px;
+    margin: 12px 0px;
+}
+
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
+    border-radius: 0px 16px 16px 0px;
+    margin: 12px 12px 12px 0px;
+}

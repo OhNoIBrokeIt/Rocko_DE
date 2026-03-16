@@ -1,0 +1,173 @@
+/**
+ * Rofi Style 1 — Sideview
+ * Wallpaper sidebar left, app list right
+ * Adapted from HyDE for 5120x1440 ultrawide + Maple Mono NF
+ * ~/.config/rofi/style_1.rasi
+ */
+
+// ── Config ────────────────────────────────────────────────
+configuration {
+    modi:                "drun,filebrowser,window,run";
+    show-icons:          true;
+    display-drun:        " ";
+    display-run:         " ";
+    display-filebrowser: " ";
+    display-window:      " ";
+    drun-display-format: "{name}";
+    window-format:       "{w}  {t}";
+    font:                "Maple Mono NF 12";
+    icon-theme:          "Papirus-Dark";
+}
+
+@theme "~/.config/rofi/theme.rasi"
+
+// ── Main window ───────────────────────────────────────────
+window {
+    height:           720px;
+    width:            1100px;
+    transparency:     "real";
+    fullscreen:       false;
+    enabled:          true;
+    cursor:           "default";
+    spacing:          0em;
+    padding:          0em;
+    border-color:     @main-br;
+    border:           2px solid;
+    border-radius:    16px;
+    background-color: @main-bg;
+}
+
+mainbox {
+    enabled:          true;
+    spacing:          0em;
+    padding:          0em;
+    orientation:      horizontal;
+    children:         [ "dummywall", "listbox" ];
+    background-color: transparent;
+}
+
+// ── Left panel — wallpaper thumbnail ─────────────────────
+dummywall {
+    spacing:          0em;
+    padding:          0em;
+    width:            550px;
+    expand:           false;
+    orientation:      horizontal;
+    children:         [ "mode-switcher", "inputbar" ];
+    background-color: transparent;
+    background-image: url("~/.cache/rofi/wall.thumb", height);
+    border-radius:    14px 0px 0px 14px;
+}
+
+// ── Mode switcher icons ───────────────────────────────────
+mode-switcher {
+    orientation:      vertical;
+    enabled:          true;
+    width:            4em;
+    padding:          8em 0.6em 8em 0.6em;
+    spacing:          1.4em;
+    background-color: @main-bg;
+    border-radius:    14px 0px 0px 14px;
+}
+
+button {
+    cursor:           pointer;
+    border-radius:    2em;
+    background-color: @main-bg;
+    text-color:       @main-fg;
+    padding:          0.4em;
+}
+
+button selected {
+    background-color: @main-fg;
+    text-color:       @main-bg;
+}
+
+// ── Search input ──────────────────────────────────────────
+inputbar {
+    enabled:          true;
+    children:         [ "entry" ];
+    background-color: transparent;
+}
+
+entry {
+    enabled:          false;
+}
+
+// ── Right panel — app list ────────────────────────────────
+listbox {
+    spacing:          0em;
+    padding:          2em;
+    children:         [ "dummy", "listview", "dummy" ];
+    background-color: transparent;
+}
+
+listview {
+    enabled:          true;
+    spacing:          0em;
+    padding:          0em;
+    columns:          1;
+    lines:            9;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    layout:           vertical;
+    reverse:          false;
+    expand:           false;
+    fixed-height:     true;
+    fixed-columns:    true;
+    cursor:           "default";
+    background-color: transparent;
+    text-color:       @main-fg;
+}
+
+dummy {
+    background-color: transparent;
+}
+
+// ── App entries ───────────────────────────────────────────
+element {
+    enabled:          true;
+    spacing:          0.9em;
+    padding:          0.5em 0.5em 0.5em 1.6em;
+    cursor:           pointer;
+    border-radius:    10px;
+    background-color: transparent;
+    text-color:       @main-fg;
+}
+
+element selected.normal {
+    background-color: @select-bg;
+    text-color:       @select-fg;
+    border-radius:    10px;
+}
+
+element-icon {
+    size:             2.8em;
+    cursor:           inherit;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+element-text {
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    cursor:           inherit;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+// ── Error message ─────────────────────────────────────────
+error-message {
+    text-color:       @main-fg;
+    background-color: @main-bg;
+    text-transform:   capitalize;
+    children:         [ "textbox" ];
+}
+
+textbox {
+    text-color:       inherit;
+    background-color: inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.5;
+}

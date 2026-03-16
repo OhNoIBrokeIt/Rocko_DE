@@ -1,0 +1,105 @@
+/**
+ * Rofi Clipboard — dmenu style for cliphist
+ * ~/.config/rofi/themes/clipboard.rasi
+ */
+
+configuration {
+    modi:            "drun";
+    show-icons:      false;
+    font:            "Maple Mono NF 12";
+}
+
+@theme "~/.config/rofi/theme.rasi"
+
+window {
+    width:            48em;
+    transparency:     "real";
+    fullscreen:       false;
+    border:           2px solid;
+    border-radius:    16px;
+    border-color:     @main-br;
+    background-color: @main-bg;
+    cursor:           "default";
+}
+
+mainbox {
+    spacing:          0em;
+    padding:          0em;
+    children:         [ "inputbar", "listview" ];
+    background-color: transparent;
+}
+
+inputbar {
+    enabled:          true;
+    spacing:          0.8em;
+    padding:          1em 1.4em;
+    border-radius:    14px 14px 0px 0px;
+    background-color: @main-ex;
+    text-color:       @main-bg;
+    children:         [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled:          true;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+entry {
+    enabled:          true;
+    background-color: transparent;
+    text-color:       inherit;
+    cursor:           text;
+    placeholder:      "search clipboard...";
+    placeholder-color: @main-bg;
+}
+
+listview {
+    enabled:          true;
+    spacing:          0em;
+    padding:          0.8em;
+    columns:          1;
+    lines:            8;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    background-color: transparent;
+    text-color:       @main-fg;
+}
+
+element {
+    enabled:          true;
+    spacing:          0em;
+    padding:          0.7em 1.2em;
+    cursor:           pointer;
+    border-radius:    8px;
+    background-color: transparent;
+    text-color:       @main-fg;
+}
+
+element selected.normal {
+    background-color: @select-bg;
+    text-color:       @select-fg;
+    border-radius:    8px;
+}
+
+element-text {
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    cursor:           inherit;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+error-message {
+    text-color:       @main-fg;
+    background-color: @main-bg;
+    children:         [ "textbox" ];
+}
+
+textbox {
+    text-color:       inherit;
+    background-color: inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.5;
+}

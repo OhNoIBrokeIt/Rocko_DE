@@ -1,0 +1,341 @@
+/* ============================================================
+   Waybar v2.0 — Primary Stylesheet (DP-2, 5120x1440)
+   ~/.config/waybar/style.css
+   ============================================================ */
+
+@import "colors-waybar.css";
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+* {
+    font-family: "Maple Mono NF", "Symbols Nerd Font Mono", monospace;
+    font-size: 18px;
+    min-height: 0;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+window#waybar {
+    background: @bar-bg;
+    color: @main-fg;
+    min-height: 48px;
+}
+
+window#waybar.top .modules-left,
+window#waybar.top .modules-center,
+window#waybar.top .modules-right {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+}
+
+/* ============================================================
+   PILL ISLANDS
+   group/pill#anything → CSS ID is always #pill
+   ============================================================ */
+
+#pill {
+    background-color: @main-bg;
+    border-style: solid;
+    border-color: @main-bg;
+}
+
+window#waybar.top #pill,
+window#waybar.top #pill button {
+    border-radius: 12pt;
+}
+
+window#waybar.top #pill {
+    margin: 0.3em 0.6em;
+    padding: 0em 1em;
+}
+
+window#waybar.top button {
+    margin: 0.45em 0.12em;
+    border: 0em;
+}
+
+/* ============================================================
+   TOOLTIP + MENU
+   ============================================================ */
+
+tooltip {
+    background: @main-bg;
+    color: @main-fg;
+    border-width: 0.1em;
+    border-color: @main-fg;
+    border-radius: 12pt;
+    font-size: 14px;
+}
+
+menu {
+    background-color: @main-bg;
+    border-radius: 12pt;
+}
+
+menu menuitem:hover {
+    background-color: @wb-act-bg;
+    color: @wb-act-fg;
+    border-radius: 12pt;
+}
+
+#tray menu * { min-height: 1.6em; }
+#tray menu separator { min-height: 0.1em; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+tooltip, menu {
+    animation-name: fadeIn;
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+}
+
+/* ============================================================
+   WORKSPACES
+   ============================================================ */
+
+#workspaces { padding: 0em; }
+
+#workspaces button {
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0em 0.4em;
+    margin: 0.35em 0em;
+    color: @main-fg;
+    font-size: 11px;
+}
+
+#workspaces button.active {
+    background: @wb-act-bg;
+    color: @wb-act-fg;
+    padding: 0em 1.3em;
+    margin: 0.35em 0.3em;
+    font-size: 14px;
+    transition: all 0.4s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#workspaces button:hover {
+    background: @wb-hvr-bg;
+    color: @wb-hvr-fg;
+    transition: all 0.3s cubic-bezier(.55, -0.68, .48, 1.682);
+}
+
+#workspaces button.urgent { color: rgba(255, 60, 111, 1.0); font-size: 13px; }
+#workspaces button.empty  { color: rgba(150, 150, 168, 0.22); }
+
+/* ============================================================
+   WINDOW TITLE
+   ============================================================ */
+
+#window {
+    font-size: 16px;
+    color: rgba(200, 200, 215, 0.65);
+    font-weight: 400;
+}
+
+/* ============================================================
+   MPRIS
+   ============================================================ */
+
+#mpris {
+    font-size: 16px;
+    color: @main-fg;
+    padding: 0 4px;
+}
+
+#mpris.paused  { color: rgba(150, 150, 168, 0.55); }
+#mpris.playing { color: @wb-act-fg; }
+#mpris.stopped { color: rgba(150, 150, 168, 0.4); }
+
+/* ============================================================
+   CLOCK
+   ============================================================ */
+
+#clock {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   WEATHER
+   ============================================================ */
+
+#custom-weather {
+    padding: 0 10px;
+    color: @wb-act-fg;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#custom-weather.offline { color: rgba(150, 150, 168, 0.5); }
+
+/* ============================================================
+   GPU / CPU DRAWER ICONS
+   ============================================================ */
+
+#custom-gpu-icon {
+    color: @wb-act-fg;
+    font-size: 24px;
+    padding: 0 10px;
+    min-width: 32px;
+}
+
+#custom-cpu-icon {
+    color: @wb-act-fg;
+    font-size: 22px;
+    padding: 0 10px;
+    min-width: 32px;
+}
+
+.gpu-drawer > *,
+.cpu-drawer > * {
+    transition: all 0.5s ease;
+}
+
+#custom-gpuinfo {
+    padding: 0 12px 0 4px;
+    font-size: 16px;
+    min-width: 0;
+}
+
+#custom-cpuinfo {
+    padding: 0 12px 0 4px;
+    font-size: 16px;
+    min-width: 0;
+}
+
+/* ============================================================
+   NETWORK
+   ============================================================ */
+
+#network {
+    padding: 0 12px;
+    font-size: 18px;
+}
+
+#network.disconnected { color: rgba(255, 60, 111, 1.0); }
+#network.ethernet     { color: rgba(100, 220, 120, 1.0); }
+#network.wifi         { color: @main-fg; }
+
+/* ============================================================
+   AUDIO
+   ============================================================ */
+
+.audio-drawer > * { transition: all 0.5s ease; }
+
+#pulseaudio {
+    padding: 0 8px 0 12px;
+    min-width: 56px;
+    font-size: 18px;
+}
+
+#pulseaudio.muted { color: rgba(255, 60, 111, 0.8); }
+
+#pulseaudio.microphone {
+    padding: 0 12px 0 6px;
+    font-size: 18px;
+    color: @wb-color;
+}
+
+#pulseaudio.microphone.source-muted {
+    color: rgba(150, 150, 168, 0.35);
+}
+
+/* ============================================================
+   STATUS PILL: swaync + bluetooth + tray + power
+   ============================================================ */
+
+.status-drawer > * { transition: all 0.5s ease; }
+
+#custom-swaync {
+    padding: 0 6px 0 12px;
+    font-size: 22px;
+    min-width: 28px;
+    color: @main-fg;
+}
+
+#custom-swaync.notification     { color: rgba(255, 60, 111, 1.0); }
+#custom-swaync.dnd-none,
+#custom-swaync.dnd-notification { color: rgba(150, 150, 168, 0.5); }
+
+#bluetooth {
+    padding: 0 6px;
+    min-width: 26px;
+    font-size: 22px;
+}
+
+#bluetooth.connected { color: @wb-act-fg; }
+#bluetooth.disabled  { color: rgba(150, 150, 168, 0.25); }
+
+#tray {
+    padding: 0 10px 0 4px;
+    min-width: 28px;
+}
+
+#tray > .passive         { -gtk-icon-effect: dim; }
+#tray > .needs-attention {
+    background: rgba(255, 60, 111, 0.15);
+    border-radius: 6px;
+}
+
+#custom-power {
+    padding: 0 12px 0 8px;
+    color: rgba(150, 150, 168, 0.55);
+    font-size: 22px;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#custom-power:hover {
+    color: rgba(255, 60, 111, 1.0);
+    transition: all 0.2s ease;
+}
+
+/* ============================================================
+   cpuinfo / gpuinfo TEMP + UTIL BUCKETS
+   ============================================================ */
+
+#custom-cpuinfo.temp-0,  #custom-cpuinfo.temp-5,
+#custom-cpuinfo.temp-10, #custom-gpuinfo.temp-0,
+#custom-gpuinfo.temp-5,  #custom-gpuinfo.temp-10  { color: #4169e1; }
+
+#custom-cpuinfo.temp-15, #custom-cpuinfo.temp-20,
+#custom-gpuinfo.temp-15, #custom-gpuinfo.temp-20  { color: #4682b4; }
+
+#custom-cpuinfo.temp-25, #custom-cpuinfo.temp-30, #custom-cpuinfo.temp-35,
+#custom-gpuinfo.temp-25, #custom-gpuinfo.temp-30, #custom-gpuinfo.temp-35 { color: #87ceeb; }
+
+#custom-cpuinfo.temp-40, #custom-cpuinfo.temp-45,
+#custom-cpuinfo.temp-50, #custom-cpuinfo.temp-55,
+#custom-gpuinfo.temp-40, #custom-gpuinfo.temp-45,
+#custom-gpuinfo.temp-50, #custom-gpuinfo.temp-55  { color: @main-fg; }
+
+#custom-cpuinfo.temp-60, #custom-gpuinfo.temp-60  { color: #ffa500; }
+#custom-cpuinfo.temp-65, #custom-gpuinfo.temp-65  { color: #ff8c00; }
+#custom-cpuinfo.temp-70, #custom-gpuinfo.temp-70  { color: #ff6347; }
+#custom-cpuinfo.temp-75, #custom-gpuinfo.temp-75  { color: #ff471a; }
+#custom-cpuinfo.temp-80, #custom-gpuinfo.temp-80  { color: #d22f2f; }
+#custom-cpuinfo.temp-85, #custom-gpuinfo.temp-85  { color: #ad1f2f; }
+
+#custom-cpuinfo.temp-90,  #custom-cpuinfo.temp-95,  #custom-cpuinfo.temp-100,
+#custom-gpuinfo.temp-90,  #custom-gpuinfo.temp-95,  #custom-gpuinfo.temp-100 { color: #8b0000; }
+
+#custom-cpuinfo.util-0,  #custom-cpuinfo.util-10, #custom-cpuinfo.util-20,
+#custom-gpuinfo.util-0,  #custom-gpuinfo.util-10, #custom-gpuinfo.util-20  { font-weight: 400; }
+
+#custom-cpuinfo.util-30, #custom-cpuinfo.util-40, #custom-cpuinfo.util-50,
+#custom-gpuinfo.util-30, #custom-gpuinfo.util-40, #custom-gpuinfo.util-50  { font-weight: 500; }
+
+#custom-cpuinfo.util-60, #custom-cpuinfo.util-70, #custom-cpuinfo.util-80,
+#custom-gpuinfo.util-60, #custom-gpuinfo.util-70, #custom-gpuinfo.util-80  { font-weight: 600; }
+
+#custom-cpuinfo.util-90, #custom-cpuinfo.util-100,
+#custom-gpuinfo.util-90, #custom-gpuinfo.util-100 { font-weight: 700; }

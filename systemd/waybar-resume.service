@@ -1,0 +1,14 @@
+[Unit]
+Description=Restart Waybar after sleep resume
+After=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+
+[Service]
+Type=oneshot
+User=ohnoibrokeit
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+ExecStartPre=/bin/sleep 2
+ExecStart=systemctl --user -M ohnoibrokeit@ restart waybar.service waybar-secondary.service
+
+[Install]
+WantedBy=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target

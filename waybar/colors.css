@@ -1,0 +1,18 @@
+/* ============================================================
+   Waybar v2.0 — Color Definitions (wallbash-ready)
+   ~/.config/waybar/colors.css
+
+   This is a static fallback. When wallbash is wired in later
+   this file gets regenerated from your wallpaper palette.
+   ============================================================ */
+
+@define-color bar-bg         rgba(8, 8, 14, 0.0);
+@define-color main-bg        rgba(14, 14, 24, 0.85);
+@define-color main-fg        rgba(205, 205, 220, 0.90);
+@define-color wb-act-bg      rgba(0, 210, 255, 0.20);
+@define-color wb-act-fg      rgba(0, 225, 255, 1.0);
+@define-color wb-hvr-bg      rgba(0, 210, 255, 0.10);
+@define-color wb-hvr-fg      rgba(0, 225, 255, 0.85);
+@define-color wb-color       rgba(205, 205, 220, 0.60);
+@define-color wb-act-color   rgba(0, 225, 255, 1.0);
+@define-color wb-hvr-color   rgba(0, 225, 255, 0.85);

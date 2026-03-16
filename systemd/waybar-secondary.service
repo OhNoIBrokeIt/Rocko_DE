@@ -1,0 +1,17 @@
+[Unit]
+Description=Waybar v2 — Secondary Bar (DP-3, 4K)
+Documentation=https://github.com/Alexays/Waybar/wiki
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 3
+ExecStart=/usr/bin/waybar --config %h/.config/waybar/config-secondary.jsonc --style %h/.config/waybar/style-secondary.css
+ExecReload=/bin/kill -SIGUSR2 $MAINPID
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target

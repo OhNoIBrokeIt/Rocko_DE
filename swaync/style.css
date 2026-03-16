@@ -1,0 +1,287 @@
+/* =========================================================
+   SWAYNC STYLE — v2.0
+   ~/.config/swaync/style.css
+
+   Colors prepended by wallpaper-rotate.sh on each rotation.
+   Font: CaskaydiaCove NF for UI, Maple Mono NF for mono elements
+   DO NOT add @import here — colors are injected at the top.
+   ========================================================= */
+
+/* ── Libadwaita named colors — required for GTK widgets ── */
+@define-color accent_color          @accent;
+@define-color accent_bg_color       @accent;
+@define-color accent_fg_color       #06060c;
+@define-color window_bg_color       #08080f;
+@define-color window_fg_color       @fg;
+@define-color view_bg_color         #0a0a14;
+@define-color view_fg_color         @fg;
+@define-color headerbar_bg_color    #06060c;
+@define-color headerbar_fg_color    @fg;
+@define-color card_bg_color         #0d0d1a;
+@define-color card_fg_color         @fg;
+@define-color popover_bg_color      #0d0d1a;
+@define-color popover_fg_color      @fg;
+@define-color sidebar_bg_color      #08080f;
+@define-color sidebar_fg_color      @fg;
+@define-color dialog_bg_color       #0d0d1a;
+@define-color dialog_fg_color       @fg;
+
+/* ── Global font ──────────────────────────────────────────  */
+* {
+    font-family: "CaskaydiaCove Nerd Font", "Maple Mono NF", sans-serif;
+    font-size: 13px;
+}
+
+/* ── Control center panel ────────────────────────────────── */
+.control-center {
+    background: alpha(@bg, 0.96);
+    border: 1px solid @accent_dim;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Title bar ───────────────────────────────────────────── */
+.widget-title {
+    padding: 8px 12px 4px 12px;
+}
+
+.widget-title > label {
+    color: @fg;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "CaskaydiaCove Nerd Font", sans-serif;
+}
+
+.widget-title > button {
+    background: @accent_dim;
+    color: @accent;
+    border-radius: 8px;
+    border: none;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: "Maple Mono NF", monospace;
+}
+
+.widget-title > button:hover {
+    background: @accent;
+    color: #06060c;
+    transition: all 0.2s ease;
+}
+
+/* ── Do Not Disturb toggle ───────────────────────────────── */
+.widget-dnd {
+    background: alpha(@bg, 0.60);
+    border: 1px solid @accent_dim;
+    border-radius: 12px;
+    margin: 4px 0px;
+    padding: 4px 12px;
+}
+
+.widget-dnd > switch {
+    border-radius: 999px;
+}
+
+.widget-dnd > switch:checked {
+    background: @accent;
+}
+
+/* ── MPRIS media player ──────────────────────────────────── */
+.widget-mpris {
+    background: alpha(@bg, 0.80);
+    border: 1px solid @accent_dim;
+    border-radius: 12px;
+    margin: 4px 0px;
+    padding: 8px;
+}
+
+.widget-mpris-player {
+    padding: 8px;
+}
+
+.widget-mpris-title {
+    color: @fg;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: "CaskaydiaCove Nerd Font", sans-serif;
+}
+
+.widget-mpris-subtitle {
+    color: alpha(@fg, 0.65);
+    font-size: 12px;
+}
+
+.widget-mpris > box > button {
+    background: transparent;
+    color: @accent;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.widget-mpris > box > button:hover {
+    background: @accent_dim;
+}
+
+/* ── Volume slider ───────────────────────────────────────── */
+.widget-volume {
+    background: alpha(@bg, 0.60);
+    border: 1px solid @accent_dim;
+    border-radius: 12px;
+    margin: 4px 0px;
+    padding: 8px 12px;
+}
+
+.widget-volume > box > label {
+    color: @accent;
+    font-size: 16px;
+    min-width: 24px;
+}
+
+scale trough {
+    background: alpha(@fg, 0.10);
+    border-radius: 999px;
+    min-height: 6px;
+}
+
+scale highlight {
+    background: @accent_mid;
+    border-radius: 999px;
+    min-height: 6px;
+}
+
+scale slider {
+    background: @accent;
+    border-radius: 999px;
+    min-width: 16px;
+    min-height: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Notification popup (toast) ──────────────────────────── */
+.notification-window {
+    margin: 6px;
+}
+
+.notification {
+    background: alpha(@bg, 0.96);
+    border: 1px solid @accent_dim;
+    border-radius: 14px;
+    color: @fg;
+    padding: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s ease;
+}
+
+.notification.critical {
+    border-left: 3px solid #ff3c6f;
+    border-color: rgba(255, 60, 111, 0.40);
+}
+
+.notification.normal {
+    border-left: 3px solid @accent_mid;
+}
+
+.notification.low {
+    border-left: 3px solid @accent_dim;
+}
+
+.notification-row:hover .notification {
+    background: alpha(@bg, 0.99);
+    border-color: @accent_mid;
+}
+
+/* ── Notification content ────────────────────────────────── */
+.notification-content {
+    padding: 8px;
+}
+
+.summary {
+    color: @fg;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: "CaskaydiaCove Nerd Font", sans-serif;
+}
+
+.body {
+    color: alpha(@fg, 0.80);
+    font-size: 13px;
+}
+
+.time {
+    color: alpha(@fg, 0.45);
+    font-size: 11px;
+    font-family: "Maple Mono NF", monospace;
+}
+
+.app-name {
+    color: @accent;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: "Maple Mono NF", monospace;
+}
+
+/* ── Notification action buttons ─────────────────────────── */
+.notification-action {
+    background: @accent_dim;
+    color: @accent;
+    border-radius: 8px;
+    border: none;
+    padding: 4px 12px;
+    margin: 2px;
+    font-size: 12px;
+}
+
+.notification-action:hover {
+    background: @accent;
+    color: #06060c;
+    transition: all 0.2s ease;
+}
+
+/* ── Close button ────────────────────────────────────────── */
+.close-button {
+    background: transparent;
+    color: alpha(@fg, 0.35);
+    border-radius: 999px;
+    border: none;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 2px;
+}
+
+.close-button:hover {
+    background: rgba(255, 60, 111, 0.15);
+    color: #ff3c6f;
+    transition: all 0.2s ease;
+}
+
+/* ── Notification group ──────────────────────────────────── */
+.notification-group {
+    margin: 2px 0px;
+}
+
+.notification-group-headers {
+    padding: 4px 8px;
+    color: alpha(@fg, 0.55);
+    font-size: 11px;
+}
+
+.notification-group-icon {
+    color: @accent;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+scrollbar {
+    min-width: 4px;
+    background: transparent;
+}
+
+scrollbar slider {
+    background: alpha(@fg, 0.15);
+    border-radius: 999px;
+    min-width: 4px;
+}
+
+scrollbar slider:hover {
+    background: alpha(@accent, 0.40);
+}
