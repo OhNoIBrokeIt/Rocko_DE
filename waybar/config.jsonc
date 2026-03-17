@@ -265,12 +265,12 @@
     "tooltip-format": "{icon} {desc}\n{volume}%",
     "scroll-step": 5,
     "format-icons": {
-      "headphone": "",
-      "headset": "",
+      "headphone": "",
+      "headset": "",
       "default": [
-        "",
-        "",
-        ""
+        "",
+        "",
+        ""
       ]
     }
   },

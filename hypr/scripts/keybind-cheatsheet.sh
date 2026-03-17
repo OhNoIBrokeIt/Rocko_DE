@@ -6,7 +6,7 @@
 #  Trigger: Super+/
 # ============================================================
 
-CONF="$HOME/.config/hypr/hyprland.conf"
+CONF="$HOME/.config/hypr/conf/keybinds.conf"
 CLIP_THEME="$HOME/.config/rofi/themes/clipboard.rasi"
 
 # Parse all bind lines from hyprland.conf
