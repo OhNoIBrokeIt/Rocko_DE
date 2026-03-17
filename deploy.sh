@@ -5,7 +5,7 @@
 #
 #  Usage:
 #    # From GitHub:
-#    git clone https://github.com/YOUR_USERNAME/Rocko_DE.git
+#    git clone https://github.com/OhNoIBrokeIt/Rocko_DE.git
 #    cd Rocko_DE && bash deploy.sh
 #
 #    # From zip:
@@ -58,12 +58,17 @@ PACKAGES=(
     imagemagick
     # Terminal
     kitty
+    # Editor
+    neovim
     # File manager
     yazi
     thunar
     # Fonts
     ttf-maple
     ttf-cascadia-code-nerd
+    ttf-nerd-fonts-symbols
+    ttf-nerd-fonts-symbols-mono
+    ttf-nerd-fonts-symbols-common
     # Icons
     papirus-icon-theme
     # Audio
@@ -71,14 +76,14 @@ PACKAGES=(
     pavucontrol
     playerctl
     # Network
-    networkmanager nm-applet
+    networkmanager network-manager-applet
+    nm-connection-editor
     blueman
     # Clipboard
     cliphist wl-clipboard
     # Screenshot
     grim slurp swappy
     # Utilities
-    pyprland
     wl-color-picker
     brightnessctl
     polkit-gnome
@@ -90,16 +95,15 @@ PACKAGES=(
     # Shell
     fish
     starship
-    # Greeter
-    greetd
+    # Display manager
+    sddm
     # Fetch
     fastfetch
 )
 
 AUR_PACKAGES=(
-    sysc-greet-hyprland
+    pyprland
     catppuccin-gtk-theme-mocha
-    python-pywal
 )
 
 info "Installing official packages..."
@@ -123,6 +127,7 @@ info "Creating directory structure..."
 mkdir -p "$CONFIG/waybar/scripts"
 mkdir -p "$CONFIG/rofi/themes"
 mkdir -p "$CONFIG/hypr/scripts"
+mkdir -p "$CONFIG/hypr/conf"
 mkdir -p "$CONFIG/systemd/user"
 mkdir -p "$CONFIG/swaync"
 mkdir -p "$CONFIG/wlogout"
@@ -130,6 +135,7 @@ mkdir -p "$CONFIG/gtk-3.0"
 mkdir -p "$CONFIG/gtk-4.0"
 mkdir -p "$CONFIG/pypr"
 mkdir -p "$CONFIG/wal"
+mkdir -p "$CONFIG/kitty"
 mkdir -p "$HOME/Pictures/Wallpapers/ultrawide"
 mkdir -p "$HOME/Pictures/Wallpapers/4k"
 mkdir -p "$HOME/Pictures/Screenshots"
@@ -145,10 +151,10 @@ echo "   ~/Pictures/Wallpapers/4k/         — DP-3 (3840x2160)"
 # ── 3. Waybar ─────────────────────────────────────────────
 info "Deploying waybar (single instance — all monitors)..."
 
-cp "$SCRIPT_DIR/waybar/config.jsonc"           "$CONFIG/waybar/config.jsonc"
-cp "$SCRIPT_DIR/waybar/style.css"              "$CONFIG/waybar/style.css"
-cp "$SCRIPT_DIR/waybar/colors.css"             "$CONFIG/waybar/colors.css"
-cp "$SCRIPT_DIR/waybar/scripts/"*              "$CONFIG/waybar/scripts/"
+cp "$SCRIPT_DIR/waybar/config.jsonc"  "$CONFIG/waybar/config.jsonc"
+cp "$SCRIPT_DIR/waybar/style.css"     "$CONFIG/waybar/style.css"
+cp "$SCRIPT_DIR/waybar/colors.css"    "$CONFIG/waybar/colors.css"
+cp "$SCRIPT_DIR/waybar/scripts/"*     "$CONFIG/waybar/scripts/"
 chmod +x "$CONFIG/waybar/scripts/"*
 
 success "Waybar deployed"
@@ -156,15 +162,13 @@ success "Waybar deployed"
 # ── 4. Systemd Services ───────────────────────────────────
 info "Installing systemd services..."
 
-cp "$SCRIPT_DIR/systemd/waybar.service"           "$CONFIG/systemd/user/waybar.service"
-cp "$SCRIPT_DIR/systemd/waybar-resume.service"    "$CONFIG/systemd/user/waybar-resume.service"
+cp "$SCRIPT_DIR/systemd/waybar.service"        "$CONFIG/systemd/user/waybar.service"
+cp "$SCRIPT_DIR/systemd/waybar-resume.service" "$CONFIG/systemd/user/waybar-resume.service"
 
 systemctl --user daemon-reload
 systemctl --user enable waybar.service
 
-# waybar-resume goes to system scope (suspend.target lives there)
-
-# waybar-resume needs system scope
+# waybar-resume needs system scope (suspend.target lives there)
 sudo cp "$SCRIPT_DIR/systemd/waybar-resume.service" /etc/systemd/system/waybar-resume.service
 sudo systemctl daemon-reload
 sudo systemctl enable waybar-resume.service
@@ -174,10 +178,10 @@ success "Systemd services installed"
 # ── 5. Rofi ───────────────────────────────────────────────
 info "Deploying rofi..."
 
-cp "$SCRIPT_DIR/rofi/theme.rasi"          "$CONFIG/rofi/theme.rasi"
-cp "$SCRIPT_DIR/rofi/themes/style_1.rasi" "$CONFIG/rofi/themes/style_1.rasi"
+cp "$SCRIPT_DIR/rofi/theme.rasi"            "$CONFIG/rofi/theme.rasi"
+cp "$SCRIPT_DIR/rofi/themes/style_1.rasi"   "$CONFIG/rofi/themes/style_1.rasi"
 cp "$SCRIPT_DIR/rofi/themes/clipboard.rasi" "$CONFIG/rofi/themes/clipboard.rasi"
-cp "$SCRIPT_DIR/rofi/rofilaunch.sh"       "$CONFIG/hypr/scripts/rofilaunch.sh"
+cp "$SCRIPT_DIR/rofi/rofilaunch.sh"         "$CONFIG/hypr/scripts/rofilaunch.sh"
 chmod +x "$CONFIG/hypr/scripts/rofilaunch.sh"
 
 success "Rofi deployed"
@@ -185,24 +189,21 @@ success "Rofi deployed"
 # ── 6. Hyprland ───────────────────────────────────────────
 info "Deploying hyprland configs..."
 
-cp "$SCRIPT_DIR/hypr/hyprland.conf"        "$CONFIG/hypr/hyprland.conf"
-cp "$SCRIPT_DIR/hypr/hyprlock.conf"        "$CONFIG/hypr/hyprlock.conf"
-cp "$SCRIPT_DIR/hypr/hypridle.conf"        "$CONFIG/hypr/hypridle.conf"
-cp "$SCRIPT_DIR/hypr/scripts/wallpaper-rotate.sh"   "$CONFIG/hypr/scripts/wallpaper-rotate.sh"
-cp "$SCRIPT_DIR/hypr/scripts/toggle-waybar.sh"      "$CONFIG/hypr/scripts/toggle-waybar.sh"
-cp "$SCRIPT_DIR/hypr/scripts/keybind-cheatsheet.sh" "$CONFIG/hypr/scripts/keybind-cheatsheet.sh"
-cp "$SCRIPT_DIR/hypr/scripts/gamemode.sh"           "$CONFIG/hypr/scripts/gamemode.sh"
+cp "$SCRIPT_DIR/hypr/hyprland.conf"                  "$CONFIG/hypr/hyprland.conf"
+cp "$SCRIPT_DIR/hypr/hyprlock.conf"                  "$CONFIG/hypr/hyprlock.conf"
+cp "$SCRIPT_DIR/hypr/hypridle.conf"                  "$CONFIG/hypr/hypridle.conf"
+cp "$SCRIPT_DIR/hypr/scripts/wallpaper-rotate.sh"    "$CONFIG/hypr/scripts/wallpaper-rotate.sh"
+cp "$SCRIPT_DIR/hypr/scripts/toggle-waybar.sh"       "$CONFIG/hypr/scripts/toggle-waybar.sh"
+cp "$SCRIPT_DIR/hypr/scripts/keybind-cheatsheet.sh"  "$CONFIG/hypr/scripts/keybind-cheatsheet.sh"
+cp "$SCRIPT_DIR/hypr/scripts/gamemode.sh"            "$CONFIG/hypr/scripts/gamemode.sh"
 chmod +x "$CONFIG/hypr/scripts/"*
 
-# Sourced config files
-mkdir -p "$CONFIG/hypr/conf"
 cp "$SCRIPT_DIR/hypr/conf/monitors.conf"    "$CONFIG/hypr/conf/monitors.conf"
 cp "$SCRIPT_DIR/hypr/conf/animations.conf"  "$CONFIG/hypr/conf/animations.conf"
 cp "$SCRIPT_DIR/hypr/conf/windowrules.conf" "$CONFIG/hypr/conf/windowrules.conf"
 cp "$SCRIPT_DIR/hypr/conf/keybinds.conf"    "$CONFIG/hypr/conf/keybinds.conf"
-chmod +x "$CONFIG/hypr/scripts/"*
 
-# Pywal color file — empty on first run
+# Pywal color file — empty on first run, populated by wallpaper-rotate.sh
 touch "$CONFIG/wal/colors-hyprland.conf"
 
 success "Hyprland deployed"
@@ -216,44 +217,61 @@ success "Pyprland deployed"
 info "Deploying neovim config..."
 mkdir -p "$CONFIG/nvim/lua/config"
 mkdir -p "$CONFIG/nvim/lua/plugins"
-cp "$SCRIPT_DIR/nvim/init.lua"              "$CONFIG/nvim/init.lua"
-cp "$SCRIPT_DIR/nvim/lua/config/"*         "$CONFIG/nvim/lua/config/"
-cp "$SCRIPT_DIR/nvim/lua/plugins/"*        "$CONFIG/nvim/lua/plugins/"
+cp "$SCRIPT_DIR/nvim/init.lua"       "$CONFIG/nvim/init.lua"
+cp "$SCRIPT_DIR/nvim/lua/config/"*   "$CONFIG/nvim/lua/config/"
+cp "$SCRIPT_DIR/nvim/lua/plugins/"*  "$CONFIG/nvim/lua/plugins/"
 success "Neovim deployed"
 
-# ── 15. Fastfetch ──────────────────────────────────────────
+# ── 9. Fastfetch ──────────────────────────────────────────
 info "Deploying fastfetch..."
 mkdir -p "$CONFIG/fastfetch"
 cp "$SCRIPT_DIR/fastfetch/config.jsonc" "$CONFIG/fastfetch/config.jsonc"
 cp "$SCRIPT_DIR/fastfetch/avatar.png"   "$CONFIG/fastfetch/avatar.png"
 success "Fastfetch deployed"
 
-# ── 15. Swaync ─────────────────────────────────────────────
+# ── 10. Swaync ────────────────────────────────────────────
 info "Deploying swaync..."
 cp "$SCRIPT_DIR/swaync/config.json" "$CONFIG/swaync/config.json"
 cp "$SCRIPT_DIR/swaync/style.css"   "$CONFIG/swaync/style.css"
 success "Swaync deployed"
 
-# ── 15. Wlogout ────────────────────────────────────────────
+# ── 11. Wlogout ───────────────────────────────────────────
 info "Deploying wlogout..."
 cp "$SCRIPT_DIR/wlogout/layout"    "$CONFIG/wlogout/layout"
 cp "$SCRIPT_DIR/wlogout/style.css" "$CONFIG/wlogout/style.css"
 success "Wlogout deployed"
 
-# ── 15. GTK / Fonts ───────────────────────────────────────
+# ── 12. GTK / Fonts ───────────────────────────────────────
 info "Applying GTK settings and fonts..."
 
 cp "$SCRIPT_DIR/gtk/gtk3-settings.ini" "$CONFIG/gtk-3.0/settings.ini"
 cp "$SCRIPT_DIR/gtk/gtk4-settings.ini" "$CONFIG/gtk-4.0/settings.ini"
 
-# gsettings font application
-gsettings set org.gnome.desktop.interface font-name          "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface document-font-name "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface monospace-font-name "Maple Mono NF 13" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface font-name           "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface document-font-name  "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface monospace-font-name "Maple Mono NF 13"           2>/dev/null || true
 
-# Kitty font
+success "GTK settings applied"
+
+# ── 13. Kitty ─────────────────────────────────────────────
+info "Deploying kitty config..."
+
 KITTY_CONF="$CONFIG/kitty/kitty.conf"
-if [[ -f "$KITTY_CONF" ]]; then
+
+if [[ ! -f "$KITTY_CONF" ]]; then
+    cat > "$KITTY_CONF" << 'KITTYEOF'
+# Kitty config — Rocko_DE
+font_family      Maple Mono NF
+bold_font        Maple Mono NF Bold
+italic_font      Maple Mono NF Italic
+bold_italic_font Maple Mono NF Bold Italic
+font_size        13.0
+
+# Pywal colors
+include ~/.cache/wal/colors-kitty.conf
+KITTYEOF
+    success "Kitty config created"
+else
     sed -i \
         -e 's|^font_family.*|font_family      Maple Mono NF|' \
         -e 's|^bold_font.*|bold_font        Maple Mono NF Bold|' \
@@ -262,13 +280,9 @@ if [[ -f "$KITTY_CONF" ]]; then
         -e 's|^font_size.*|font_size        13.0|' \
         "$KITTY_CONF"
     success "Kitty font updated"
-else
-    warn "Kitty config not found — set font manually to 'Maple Mono NF 13'"
 fi
 
-success "GTK settings applied"
-
-# ── 15. Fish shell ────────────────────────────────────────
+# ── 14. Fish shell ────────────────────────────────────────
 info "Setting fish as default shell..."
 if command -v fish &>/dev/null; then
     FISH_PATH=$(which fish)
@@ -278,7 +292,6 @@ if command -v fish &>/dev/null; then
     chsh -s "$FISH_PATH" 2>/dev/null || warn "Could not change shell — run: chsh -s $(which fish)"
     success "Fish set as default shell"
 
-    # Add fastfetch to fish startup
     FISH_CONFIG="$USER_HOME/.config/fish/config.fish"
     mkdir -p "$(dirname "$FISH_CONFIG")"
     if [[ -f "$FISH_CONFIG" ]]; then
@@ -303,37 +316,19 @@ else
     warn "Fish not installed"
 fi
 
-# ── 15. Greetd + sysc-greet-hyprland ─────────────────────
-info "Configuring greetd..."
-if command -v greetd &>/dev/null; then
-    # Disable any other display managers that may be installed
-    sudo systemctl disable sddm 2>/dev/null || true
-    sudo systemctl disable lightdm 2>/dev/null || true
-    sudo systemctl disable gdm 2>/dev/null || true
-    sudo systemctl mask sddm 2>/dev/null || true
+# ── 15. SDDM ──────────────────────────────────────────────
+info "Configuring SDDM..."
 
-    sudo systemctl enable greetd
-    success "Greetd enabled"
+sudo systemctl disable lightdm 2>/dev/null || true
+sudo systemctl disable gdm     2>/dev/null || true
+sudo systemctl disable greetd  2>/dev/null || true
+sudo systemctl enable sddm
 
-    # Deploy greetd config if present
-    if [[ -f "$SCRIPT_DIR/greetd/config.toml" ]]; then
-        sudo mkdir -p /etc/greetd
-        sudo cp "$SCRIPT_DIR/greetd/config.toml" /etc/greetd/config.toml
-        sudo cp "$SCRIPT_DIR/greetd/hyprland-greeter-config.conf" /etc/greetd/hyprland-greeter-config.conf
-        success "Greetd configs deployed"
-    fi
+success "SDDM enabled"
 
-    warn "sysc-greet-hyprland is the greeter — configure it at:"
-    warn "https://github.com/Nomadcxx/sysc-greet"
-    warn "Remove any old greetd configs: sudo rm -f /etc/greetd/greeter-launch.sh"
-else
-    warn "Greetd not installed — install with: paru -S greetd sysc-greet-hyprland"
-fi
-
-# ── 15. Final setup ───────────────────────────────────────
+# ── 16. Final setup ───────────────────────────────────────
 info "Running initial wallpaper setup..."
 if [[ -n "$(find "$HOME/Pictures/Wallpapers/ultrawide" -type f 2>/dev/null | head -1)" ]]; then
-    # Can't run wallpaper-rotate until Hyprland is running
     warn "Run this after first login: ~/.config/hypr/scripts/wallpaper-rotate.sh next"
 else
     warn "No wallpapers found — add images to ~/Pictures/Wallpapers/ultrawide/ and ~/Pictures/Wallpapers/4k/"
@@ -348,8 +343,7 @@ echo "  Next steps:"
 echo "  1. Add wallpapers to ~/Pictures/Wallpapers/ultrawide/ and ~/Pictures/Wallpapers/4k/"
 echo "  2. Log out and log back in (or reboot)"
 echo "  3. On first login run: ~/.config/hypr/scripts/wallpaper-rotate.sh next"
-echo "  4. Configure sysc-greet-hyprland: https://github.com/Nomadcxx/sysc-greet"
-echo "  5. Run nwg-look to confirm GTK theme"
+echo "  4. Run nwg-look to confirm GTK theme"
 echo ""
 echo "  Key bindings:"
 echo "  Super+R          — App launcher"
