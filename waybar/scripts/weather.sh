@@ -36,12 +36,12 @@ if [[ -z "$DATA" ]]; then
     exit 0
 fi
 
-TEMP_C=$(echo "$DATA" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['temp_C'])" 2>/dev/null)
-FEELS=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['FeelsLikeC'])" 2>/dev/null)
-DESC=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherDesc'][0]['value'])" 2>/dev/null)
-HUMID=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['humidity'])" 2>/dev/null)
-WIND=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['windspeedKmph'])" 2>/dev/null)
-CODE=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['current_condition'][0]['weatherCode'])" 2>/dev/null)
+TEMP_C=$(echo "$DATA" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['temp_C'])" 2>/dev/null)
+FEELS=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['FeelsLikeC'])" 2>/dev/null)
+DESC=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['weatherDesc'][0]['value'])" 2>/dev/null)
+HUMID=$(echo "$DATA"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['humidity'])" 2>/dev/null)
+WIND=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['windspeedKmph'])" 2>/dev/null)
+CODE=$(echo "$DATA"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data']['current_condition'][0]['weatherCode'])" 2>/dev/null)
 
 get_icon() {
     local code="$1"
