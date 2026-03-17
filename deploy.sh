@@ -84,6 +84,10 @@ PACKAGES=(
     # Screenshot
     grim slurp swappy
     # Utilities
+    tumbler
+    ffmpegthumbnailer
+    xdg-user-dirs
+    wl-clip-persist
     wl-color-picker
     brightnessctl
     polkit-gnome
