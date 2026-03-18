@@ -98,6 +98,7 @@ PACKAGES=(
     # Shell
     fish
     starship
+    swayimg
     # Display manager
     sddm
     # Fetch
@@ -108,6 +109,7 @@ AUR_PACKAGES=(
     pyprland
     catppuccin-gtk-theme-mocha
     sddm-sugar-candy-git
+    qimgv-qt6-kde-git
 )
 
 info "Installing official packages..."
@@ -265,6 +267,15 @@ gsettings set org.gnome.desktop.interface monospace-font-name 'Maple Mono NF 13'
 
 success "GTK settings applied"
 
+# Set default image viewer
+xdg-mime default qimgv.desktop image/jpeg
+xdg-mime default qimgv.desktop image/png
+xdg-mime default qimgv.desktop image/webp
+xdg-mime default qimgv.desktop image/gif
+xdg-mime default qimgv.desktop image/bmp
+xdg-mime default qimgv.desktop image/tiff
+success "Default image viewer set to qimgv"
+
 # ── 14. Fish shell ────────────────────────────────────────
 info "Setting fish as default shell..."
 if command -v fish &>/dev/null; then
@@ -272,7 +283,7 @@ if command -v fish &>/dev/null; then
     if ! grep -q "$FISH_PATH" /etc/shells; then
         echo "$FISH_PATH" | sudo tee -a /etc/shells
     fi
-    chsh -s "$FISH_PATH" 2>/dev/null || warn "Could not change shell — run: chsh -s $(which fish)"
+    sudo usermod -s "$FISH_PATH" "$USER" 2>/dev/null || chsh -s "$FISH_PATH" 2>/dev/null || warn "Could not change shell — run: chsh -s $(which fish)"
     success "Fish set as default shell"
 
     FISH_CONFIG="$USER_HOME/.config/fish/config.fish"
@@ -298,6 +309,23 @@ FISHEOF
 else
     warn "Fish not installed"
 fi
+
+# ── Starship prompt (all shells) ──────────────────────────
+info "Configuring starship prompt..."
+# Fish — add if not already present
+FISH_CONFIG="$USER_HOME/.config/fish/config.fish"
+if [[ -f "$FISH_CONFIG" ]] && ! grep -q "starship init fish" "$FISH_CONFIG"; then
+    echo "starship init fish | source" >> "$FISH_CONFIG"
+fi
+# Bash
+if ! grep -q "starship init bash" "$USER_HOME/.bashrc" 2>/dev/null; then
+    echo 'eval "$(starship init bash)"' >> "$USER_HOME/.bashrc"
+fi
+# Zsh
+if ! grep -q "starship init zsh" "$USER_HOME/.zshrc" 2>/dev/null; then
+    echo 'eval "$(starship init zsh)"' >> "$USER_HOME/.zshrc"
+fi
+success "Starship configured for bash, zsh, and fish"
 
 # ── 15. SDDM ──────────────────────────────────────────────
 info "Configuring SDDM..."
