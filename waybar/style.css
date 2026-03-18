@@ -223,7 +223,7 @@ tooltip, menu {
 }
 
 #network.disconnected { color: rgba(255, 60, 111, 1.0); }
-#network.ethernet     { color: rgba(100, 220, 120, 1.0); }
+#network.ethernet     { color: rgba(148, 226, 213, 0.85); }
 #network.wifi         { color: @main-fg; }
 
 /* ============================================================
