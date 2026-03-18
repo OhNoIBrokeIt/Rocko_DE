@@ -23,7 +23,7 @@ DIR_4K="$WALLPAPER_BASE/4k"
 MONITOR_ULTRAWIDE="DP-2"
 MONITOR_4K="DP-3"
 
-INTERVAL=300   # seconds between rotations (5 min)
+INTERVAL=1800  # seconds between rotations (30 min)
 
 TRANSITION_FLAGS=(
   --transition-type     fade
@@ -110,6 +110,28 @@ brighten_color() {
   printf '%02x%02x%02x' $r $g $b
 }
 
+# Cap overly bright/saturated colors for OLED safety
+# Reduces luminance above threshold to protect static accent pixels
+dim_color() {
+  local hex="${1/\#/}"
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+  local brightness=$(( (r*299 + g*587 + b*114) / 1000 ))
+  local max_brightness=200
+  if (( brightness > max_brightness )); then
+    local scale=$(( max_brightness * 100 / brightness ))
+    r=$(( r * scale / 100 )); g=$(( g * scale / 100 )); b=$(( b * scale / 100 ))
+  fi
+  # Also cap individual channels to avoid pure saturated primaries
+  local max=$r; (( g > max )) && max=$g; (( b > max )) && max=$b
+  if (( max > 230 )); then
+    local cap_scale=$(( 230 * 100 / max ))
+    r=$(( r * cap_scale / 100 )); g=$(( g * cap_scale / 100 )); b=$(( b * cap_scale / 100 ))
+  fi
+  printf '%02x%02x%02x' $r $g $b
+}
+
 saturation_score() {
   local hex="${1/\#/}"
   local r=$((16#${hex:0:2}))
@@ -180,7 +202,7 @@ apply_pywal() {
     (( ws > best_score )) && { best_score=$ws; best_hex="${c/\#/}"; }
   done
 
-  local accent_hex; accent_hex=$(brighten_color "$best_hex")
+  local accent_hex; accent_hex=$(brighten_color "$best_hex"); accent_hex=$(dim_color "$accent_hex")
   local accent="#${accent_hex}"
 
   # Derive darker/lighter variants for the pill backgrounds

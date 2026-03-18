@@ -63,6 +63,8 @@ PACKAGES=(
     # File manager
     yazi
     thunar
+    tumbler
+    ffmpegthumbnailer
     # Fonts
     ttf-maple
     ttf-cascadia-code-nerd
@@ -80,14 +82,11 @@ PACKAGES=(
     nm-connection-editor
     blueman
     # Clipboard
-    cliphist wl-clipboard
+    cliphist wl-clipboard wl-clip-persist
     # Screenshot
     grim slurp swappy
     # Utilities
-    tumbler
-    ffmpegthumbnailer
     xdg-user-dirs
-    wl-clip-persist
     wl-color-picker
     brightnessctl
     polkit-gnome
@@ -108,6 +107,7 @@ PACKAGES=(
 AUR_PACKAGES=(
     pyprland
     catppuccin-gtk-theme-mocha
+    sddm-sugar-candy-git
 )
 
 info "Installing official packages..."
@@ -245,46 +245,25 @@ cp "$SCRIPT_DIR/wlogout/layout"    "$CONFIG/wlogout/layout"
 cp "$SCRIPT_DIR/wlogout/style.css" "$CONFIG/wlogout/style.css"
 success "Wlogout deployed"
 
-# ── 12. GTK / Fonts ───────────────────────────────────────
-info "Applying GTK settings and fonts..."
+# ── 12. Kitty ─────────────────────────────────────────────
+info "Deploying kitty config..."
+cp "$SCRIPT_DIR/kitty/kitty.conf" "$CONFIG/kitty/kitty.conf"
+success "Kitty deployed"
+
+# ── 13. GTK / Fonts / Icons ───────────────────────────────
+info "Applying GTK settings, fonts, and icons..."
 
 cp "$SCRIPT_DIR/gtk/gtk3-settings.ini" "$CONFIG/gtk-3.0/settings.ini"
 cp "$SCRIPT_DIR/gtk/gtk4-settings.ini" "$CONFIG/gtk-4.0/settings.ini"
 
-gsettings set org.gnome.desktop.interface font-name           "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface document-font-name  "CaskaydiaCove Nerd Font 11" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface monospace-font-name "Maple Mono NF 13"           2>/dev/null || true
+gsettings set org.gnome.desktop.interface gtk-theme           'catppuccin-mocha-blue-standard+default' 2>/dev/null || true
+gsettings set org.gnome.desktop.interface icon-theme          'Papirus-Dark'                           2>/dev/null || true
+gsettings set org.gnome.desktop.interface cursor-theme        'Adwaita'                                2>/dev/null || true
+gsettings set org.gnome.desktop.interface font-name           'Maple Mono NF 11'                       2>/dev/null || true
+gsettings set org.gnome.desktop.interface document-font-name  'Maple Mono NF 11'                       2>/dev/null || true
+gsettings set org.gnome.desktop.interface monospace-font-name 'Maple Mono NF 13'                       2>/dev/null || true
 
 success "GTK settings applied"
-
-# ── 13. Kitty ─────────────────────────────────────────────
-info "Deploying kitty config..."
-
-KITTY_CONF="$CONFIG/kitty/kitty.conf"
-
-if [[ ! -f "$KITTY_CONF" ]]; then
-    cat > "$KITTY_CONF" << 'KITTYEOF'
-# Kitty config — Rocko_DE
-font_family      Maple Mono NF
-bold_font        Maple Mono NF Bold
-italic_font      Maple Mono NF Italic
-bold_italic_font Maple Mono NF Bold Italic
-font_size        13.0
-
-# Pywal colors
-include ~/.cache/wal/colors-kitty.conf
-KITTYEOF
-    success "Kitty config created"
-else
-    sed -i \
-        -e 's|^font_family.*|font_family      Maple Mono NF|' \
-        -e 's|^bold_font.*|bold_font        Maple Mono NF Bold|' \
-        -e 's|^italic_font.*|italic_font      Maple Mono NF Italic|' \
-        -e 's|^bold_italic_font.*|bold_italic_font Maple Mono NF Bold Italic|' \
-        -e 's|^font_size.*|font_size        13.0|' \
-        "$KITTY_CONF"
-    success "Kitty font updated"
-fi
 
 # ── 14. Fish shell ────────────────────────────────────────
 info "Setting fish as default shell..."
@@ -328,9 +307,27 @@ sudo systemctl disable gdm     2>/dev/null || true
 sudo systemctl disable greetd  2>/dev/null || true
 sudo systemctl enable sddm
 
-success "SDDM enabled"
+# Deploy sugar-candy theme config
+sudo cp "$SCRIPT_DIR/sddm/theme.conf" /usr/share/sddm/themes/sugar-candy/theme.conf
 
-# ── 16. Final setup ───────────────────────────────────────
+# Deploy wallpapers
+sudo cp "$SCRIPT_DIR/sddm/Backgrounds/"* /usr/share/sddm/themes/sugar-candy/Backgrounds/
+
+# Set sugar-candy as active theme
+sudo mkdir -p /etc/sddm.conf.d
+sudo cp "$SCRIPT_DIR/sddm/sddm.conf" /etc/sddm.conf.d/theme.conf
+
+success "SDDM configured"
+
+# ── 16. Pacman hooks ──────────────────────────────────────
+info "Installing pacman hooks..."
+
+sudo mkdir -p /etc/pacman.d/hooks
+sudo cp "$SCRIPT_DIR/hooks/waybar-updates.hook" /etc/pacman.d/hooks/waybar-updates.hook
+
+success "Pacman hooks installed"
+
+# ── 17. Final setup ───────────────────────────────────────
 info "Running initial wallpaper setup..."
 if [[ -n "$(find "$HOME/Pictures/Wallpapers/ultrawide" -type f 2>/dev/null | head -1)" ]]; then
     warn "Run this after first login: ~/.config/hypr/scripts/wallpaper-rotate.sh next"
