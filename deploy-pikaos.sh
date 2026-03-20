@@ -136,7 +136,7 @@ if [[ ! -d "/usr/share/sddm/themes/sugar-candy" ]]; then
     git clone --depth=1 https://github.com/Kangie/sddm-sugar-candy.git /tmp/sugar-candy 2>/dev/null || \
         warn "Could not clone sugar-candy — install manually"
     if [[ -d /tmp/sugar-candy ]]; then
-        sudo cp -r /tmp/sugar-candy /usr/share/sddm/themes/sugar-candy
+        sudo mkdir -p /usr/share/sddm/themes && sudo cp -r /tmp/sugar-candy /usr/share/sddm/themes/sugar-candy
         rm -rf /tmp/sugar-candy
         success "SDDM Sugar Candy installed"
     fi
@@ -374,6 +374,15 @@ if ! grep -q "starship init zsh" "$USER_HOME/.zshrc" 2>/dev/null; then
     echo 'eval "$(starship init zsh)"' >> "$USER_HOME/.zshrc" 2>/dev/null || true
 fi
 success "Starship configured for all shells"
+
+# Ensure ~/.local/bin is in PATH for pip-installed tools
+if ! grep -q ".local/bin" "$USER_HOME/.bashrc" 2>/dev/null; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$USER_HOME/.bashrc"
+fi
+if ! grep -q ".local/bin" "$USER_HOME/.zshrc" 2>/dev/null; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$USER_HOME/.zshrc" 2>/dev/null || true
+fi
+success "PATH updated for pip-installed tools"
 
 # ── 17. SDDM ──────────────────────────────────────────────
 info "Configuring SDDM..."
