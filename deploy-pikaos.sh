@@ -219,6 +219,12 @@ cp "$SCRIPT_DIR/waybar/style.css"     "$CONFIG/waybar/style.css"
 cp "$SCRIPT_DIR/waybar/colors.css"    "$CONFIG/waybar/colors.css"
 cp "$SCRIPT_DIR/waybar/scripts/"*     "$CONFIG/waybar/scripts/"
 chmod +x "$CONFIG/waybar/scripts/"*
+cp "$SCRIPT_DIR/waybar/colors.css"    "$CONFIG/waybar/colors-waybar.css"
+# Apply PikaOS-specific waybar overrides
+cp "$SCRIPT_DIR/pikaos-overrides/waybar/config.jsonc"        "$CONFIG/waybar/config.jsonc"
+cp "$SCRIPT_DIR/pikaos-overrides/waybar/style.css"            "$CONFIG/waybar/style.css"
+cp "$SCRIPT_DIR/pikaos-overrides/waybar/scripts/updates.sh"   "$CONFIG/waybar/scripts/updates.sh"
+chmod +x "$CONFIG/waybar/scripts/updates.sh"
 
 success "Waybar deployed"
 
@@ -266,6 +272,8 @@ cp "$SCRIPT_DIR/hypr/conf/windowrules.conf" "$CONFIG/hypr/conf/windowrules.conf"
 cp "$SCRIPT_DIR/hypr/conf/keybinds.conf"    "$CONFIG/hypr/conf/keybinds.conf"
 
 touch "$CONFIG/wal/colors-hyprland.conf"
+# Apply PikaOS-specific hypr exec.conf override
+cp "$SCRIPT_DIR/pikaos-overrides/hypr/exec.conf" "$CONFIG/hypr/exec.conf"
 
 success "Hyprland deployed"
 
