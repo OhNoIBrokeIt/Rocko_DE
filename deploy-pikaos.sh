@@ -280,6 +280,7 @@ success "Hyprland deployed"
 # ── 9. Pyprland ───────────────────────────────────────────
 info "Deploying pyprland..."
 cp "$SCRIPT_DIR/pypr/config.toml" "$CONFIG/pypr/config.toml"
+cp "$SCRIPT_DIR/pikaos-overrides/pypr/config.toml" "$CONFIG/pypr/config.toml"
 success "Pyprland deployed"
 
 # ── 10. Neovim ────────────────────────────────────────────
